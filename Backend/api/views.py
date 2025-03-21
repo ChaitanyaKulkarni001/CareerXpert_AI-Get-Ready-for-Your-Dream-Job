@@ -243,7 +243,7 @@ class SpecificRoleInterview(APIView):
             # Generate the interview question
             response = model.generate_content(analysis_prompt)
             content = response.text
-
+            
             return Response({"question": content}, status=status.HTTP_200_OK)
 
         except Exception as e:
@@ -272,6 +272,21 @@ class OneMinuteQuestion(APIView):
             model = genai.GenerativeModel("gemini-1.5-flash")
             response = model.generate_content(analysis_prompt)
             content = response.text
+            python_object = json.loads(content)
+            try:
+                
+                InteractionHistory.objects.create(
+                    user=request.user,
+                    interaction_type='ONE_MINUTE_INTERVIEW',  # or appropriate type
+                    question=question,
+                    transcription=transcription,
+                    ai_response=python_object['feedback'],
+                    metadata={'audio_file': audio_file.name,
+                            'rating': python_object['rating']
+                            }  # add extra info if needed
+                )
+            except Exception as e:
+                print("error ",e)
             return Response({"analysis": content, "transcription": transcription}, status=status.HTTP_200_OK)
 
         except Exception as e:
@@ -520,7 +535,21 @@ class GroupDiscussion(APIView):
             response = model.generate_content(analysis_prompt)
             content = response.text
             print(content)
-            
+            python_object = json.loads(content)
+            try:
+                
+                InteractionHistory.objects.create(
+                    user=request.user,
+                    interaction_type='GROUP_DISCUSSION',  # or appropriate type
+                    question="no question",
+                    transcription=transcription,
+                    ai_response=python_object['feedback'],
+                    metadata={'audio_file': audio_file.name,
+                            'rating': python_object['rating']
+                            }  # add extra info if needed
+                )
+            except Exception as e:
+                print("error ",e)
             # Optionally, include the user's transcription as part of the response for TTS if needed.
             return Response({"text": content, "userComment": transcription}, status=status.HTTP_200_OK)
         except Exception as e:

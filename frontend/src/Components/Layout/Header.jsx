@@ -107,7 +107,7 @@ const Header = () => {
             )
           }
           <li>
-            <button onClick={() => { navigate("/features") }} className={` ${color} nav-link text-lg  hover:text-gray-200 transition-colors duration-300 !important`}>
+            <button onClick={() => { navigate("/feature") }} className={` ${color} nav-link text-lg  hover:text-gray-200 transition-colors duration-300 !important`}>
               Features
             </button>
           </li>

@@ -28,6 +28,7 @@ import CodeQuiz from './Components/QuizSection/CodeQuiz';
 import GroupDisccusion from './Components/GroupDisccusion/GroupDisccusion';
 import History from './Components/History/History';
 import Debate from './Components/VideoCall/Debate';
+import Feature from './Components/Pages/Feature';
 
 function Logout() {
 
@@ -57,6 +58,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/try" element={<Trial />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/feature" element={<Feature />} />
           
 
           <Route path="/about" element={
