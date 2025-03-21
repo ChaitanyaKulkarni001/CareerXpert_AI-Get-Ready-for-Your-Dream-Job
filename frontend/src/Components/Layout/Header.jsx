@@ -75,13 +75,13 @@ const Header = () => {
   };
   return (
     <header className={`fixed top-0 left-0 h-20 w-full  ${theme == 'dim' ? 'bg-white text-black':'bg-[#011638] text-white'  } shadow-md z-50`}>
-      <nav className="container mx-auto flex items-center justify-between py-4 px-6">
+      <nav className="container mx-auto flex items-center justify-between px-6">
         {/* Logo */}
         <div className="flex items-center space-x-2">
           <a href="/" className="flex items-center">
-            <img src={logo} width="50" alt="logo" className="transition-transform duration-300 hover:scale-105" />
+            <img src={logo} width="200" height="100" alt="logo" className="transition-transform duration-300 hover:scale-105" />
           </a>
-          <span className=" text-xl font-semibold">AI Interview</span>
+          {/* <span className=" text-xl font-semibold">AI Interview</span> */}
         </div>
 
         {/* Navbar menu */}

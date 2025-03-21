@@ -78,9 +78,10 @@
 // export default Dashboard;
 
 
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Repeat, Briefcase, Clock, Lightbulb, Users, Brain } from "lucide-react";
+import { ThemeContext } from "../ThemeContext";
 // import PractiseInterview from "../../assets/PracriseInterview.jpg"; // Ensure correct file name and extension
 // import FollowUpInterview from "../../assets/FollowInterview.jpg";
 // import RoleBasedInterview from "../../assets/RoleBased.jpg";
@@ -98,16 +99,16 @@ const sections = [
         icon: "",
         isImage: true,
       },
-      { 
-        path: "/dashboard/follow-up-interview", 
-        title: "Follow-Up Interview", 
-        icon: "", 
-        isImage: true 
+      {
+        path: "/dashboard/follow-up-interview",
+        title: "Follow-Up Interview",
+        icon: "",
+        isImage: true
       },
-      { 
-        path: "/dashboard/role-based-interview", 
-        title: "Role Based Interview", 
-        icon:  "", 
+      {
+        path: "/dashboard/role-based-interview",
+        title: "Role Based Interview",
+        icon: "",
         isImage: true
       },
     ],
@@ -115,56 +116,66 @@ const sections = [
   {
     title: "Quiz Section",
     features: [
-      { 
-        path: "/dashboard/rapid-fire", 
-        title: "Rapid Fire", 
-        icon: "", 
+      {
+        path: "/dashboard/rapid-fire",
+        title: "Rapid Fire",
+        icon: "",
         isImage: true
       },
-      { 
-        path: "/dashboard/quick-think", 
-        title: "Quick Think", 
-        icon: <Lightbulb size={40} />, 
-        isImage: false 
+      {
+        path: "/dashboard/quick-think",
+        title: "Quick Think",
+        icon: <Lightbulb size={40} />,
+        isImage: false
       },
     ],
   },
   {
     title: "Resume Section",
     features: [
-      { 
-        path: "/dashboard/analyze-resume", 
-        title: "Analyze Resume", 
-        icon: <Brain size={40} />, 
-        isImage: false 
+      {
+        path: "/dashboard/analyze-resume",
+        title: "Analyze Resume",
+        icon: <Brain size={40} />,
+        isImage: false
       },
     ],
   },
   {
     title: "Mock Interview",
     features: [
-      { 
-        path: "/dashboard/mock-interview", 
-        title: "Mock Interview", 
-        icon: <Users size={40} />, 
-        isImage: false 
+      {
+        path: "/dashboard/mock-interview",
+        title: "Mock Interview",
+        icon: <Users size={40} />,
+        isImage: false
       },
     ],
   },
 ];
 
 const Dashboard = () => {
+  const { theme } = useContext(ThemeContext);
   return (
-    <div className="p-8 bg-gray-900 min-h-screen text-white">
+    <div
+      className={`p-8 min-h-screen transition-all duration-300 ${theme === "dim" ? "bg-white text-black" : "bg-gray-900 text-white"
+        }`}
+    >
       {/* Dashboard Title */}
-      <h1 className="text-5xl font-extrabold text-orange-500 mb-8 text-left">
+      <h1
+        className={`text-5xl font-extrabold mb-8 text-left ${theme === "dim" ? "text-[#011638]" : "text-orange-500"
+          }`}
+      >
         Dashboard
       </h1>
 
       {sections.map((section, index) => (
         <div key={index} className="mb-12">
           {/* Section Heading */}
-          <h2 className="text-3xl font-bold text-blue-400 mb-6 text-left">
+          <h2
+            className={`text-3xl font-bold mb-6 text-left ${theme === "dim" ? "text-[#011638]" : "text-blue-400"
+              }`}
+          >
             {section.title}
           </h2>
 
@@ -174,10 +185,12 @@ const Dashboard = () => {
               <Link
                 key={feature.path}
                 to={feature.path}
-                className="bg-gray-800 border border-orange-500 rounded-xl overflow-hidden shadow-lg transition-all duration-300 transform hover:scale-105"
+                className={`border rounded-xl overflow-hidden shadow-lg transition-all duration-300 transform hover:scale-105 ${theme === "dim"
+                    ? "bg-white border-[#011638] text-black"
+                    : "bg-gray-800 border-orange-500 text-white"
+                  }`}
               >
                 {feature.isImage ? (
-                  // The image container that covers the full upper part of the card
                   <div className="w-full h-48 overflow-hidden hover:animate-pulse">
                     <img
                       src={feature.icon}
@@ -186,12 +199,10 @@ const Dashboard = () => {
                     />
                   </div>
                 ) : (
-                  // For non-image icons, center them inside a fixed-height container
                   <div className="w-full h-48 flex items-center justify-center">
                     {feature.icon}
                   </div>
                 )}
-                {/* Heading centered below the image */}
                 <p className="text-xl font-semibold text-center py-4">
                   {feature.title}
                 </p>

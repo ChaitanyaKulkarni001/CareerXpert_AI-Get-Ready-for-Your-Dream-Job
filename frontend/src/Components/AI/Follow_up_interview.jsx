@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import AudioRecorder from "../Recordings/AudioRecorder";  // Assuming this is already implemented
 import api from "../../api";
 import TextToSpeech from "../Recordings/Helper/TextToSpeech";
+import { ThemeContext } from "../ThemeContext";
 
 const Follow_up_interview = () => {
   const [response, setResponse] = useState(null);
@@ -46,13 +47,14 @@ const Follow_up_interview = () => {
   const removeNextQuestionFromAnalysis = (analysis) => {
     return analysis.replace(/\{\{\s*.*?\s*\}\}/, "").trim();
   };
-
+  const {theme} = useContext(ThemeContext);
   return (
-    <div className="max-w-3xl mx-auto mt-10 p-6 border rounded-xl shadow-lg bg-white">
+    <div className="max-w-3xl mx-auto mt-10 p-6 border rounded-xl shadow-lg text-white">
       {/* Title */}
-      <h1 className="text-3xl font-bold text-center text-gray-900 mb-6">
+      <h1 className={`${theme === 'dim' ? 'text-gray-900' : 'text-white'}`}>
         🎤 Follow-Up Interview
       </h1>
+
       {/* Info Icon and description toggle */}
       <div
         className="flex items-center justify-end mb-4 relative"
@@ -61,37 +63,37 @@ const Follow_up_interview = () => {
       >
         <span className="w-6 h-6 cursor-pointer">ℹ️</span>
         {showInfo && (
-          <div className="absolute bg-black text-white text-xs rounded px-2 py-1 bottom-8 left-1/2 transform -translate-x-1/2">
+          <div className="absolute bg-gray-900 text-white text-xs rounded px-2 py-1 bottom-8 left-1/2 transform -translate-x-1/2">
             The AI will ask a series of questions, and based on your answers, provide relevant follow-up questions.
           </div>
         )}
       </div>
 
       {/* Current Question */}
-      <p className="text-lg font-semibold mb-4">{currentQuestion}</p>
+      <p className={`${theme === 'dim' ? 'text-gray-900' : 'text-white'}`}>{currentQuestion}</p>
 
       {/* Audio Recorder */}
       <AudioRecorder onAudioSubmit={handleAudioSubmit} />
 
-      {loading && <p className="text-blue-500 text-center mt-4">Processing...</p>}
+      {loading && <p className="text-blue-400 text-center mt-4">Processing...</p>}
 
       {response && (
         <>
           {/* Text-to-Speech for AI Analysis */}
           <TextToSpeech text={response.analysis} />
 
-          <div className="response mt-6 p-4 border rounded-lg bg-white shadow-sm">
+          <div className="response mt-6 p-4 border rounded-lg bg-gray-800 shadow-sm">
             {/* User's Response (Transcription) */}
-            <h2 className="text-lg font-semibold mb-2">Your Response:</h2>
-            <p className="text-gray-700">{response.transcription}</p>
+            <h2 className="text-lg font-semibold mb-2 text-gray-300">Your Response:</h2>
+            <p className="text-gray-400">{response.transcription}</p>
 
             {/* AI's Analysis (Cleaned without next question) */}
-            <h2 className="text-lg font-semibold mb-2 mt-4">AI's Analysis:</h2>
-            <p className="text-green-500">{response.analysis.slice(19, -6)}</p>
+            <h2 className="text-lg font-semibold mb-2 mt-4 text-green-400">AI's Analysis:</h2>
+            <p className="text-green-300">{response.analysis.slice(19, -6)}</p>
 
             {/* Next Question */}
-            <h2 className="text-lg font-semibold mb-2 mt-4">Next Question:</h2>
-            <p className="text-blue-500">{currentQuestion}</p>
+            <h2 className="text-lg font-semibold mb-2 mt-4 text-blue-400">Next Question:</h2>
+            <p className="text-blue-300">{currentQuestion}</p>
           </div>
         </>
       )}
