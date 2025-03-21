@@ -1,22 +1,44 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Note
-
+from .models import *
 
 class UserSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(required=True)  # Ensure email is included and required
+
     class Meta:
         model = User
-        fields = ["id", "username", "password"]
-        extra_kwargs = {"password": {"write_only": True}}
+        fields = ["username", "email", "password"]  # Include email in the fields
+        extra_kwargs = {
+            "password": {"write_only": True},# Ensure password is write-only
+            # "is_admin" : {"read_only":True} 
+        }
 
     def create(self, validated_data):
+        # Override create to handle password hashing
         print(validated_data)
-        user = User.objects.create_user(**validated_data)
+        user = User.objects.create_user(
+            username=validated_data["username"],
+            email=validated_data["email"],
+            password=validated_data["password"],
+        )
+        print(user)
         return user
+    
 
-
-class NoteSerializer(serializers.ModelSerializer):
+class AptiQuestionSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Note
-        fields = ["id", "title", "content", "created_at", "author"]
-        extra_kwargs = {"author": {"read_only": True}}
+        model = AptiQuestion
+        fields = '__all__'  
+        
+# Serializer for Quiz Questions
+
+
+class QuestionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Question
+        fields = ["id", "language", "topic", "statement", "options", "correct_answer", "explanation"]
+
+class ProgrammingLanguageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProgrammingLanguage
+        fields = ["id", "name"]
