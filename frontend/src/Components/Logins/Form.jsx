@@ -19,7 +19,6 @@ function Form() {
       // Save access and refresh tokens
       localStorage.setItem(ACCESS_TOKEN, res.data.access);
       localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
-      
       navigate("/dashboard");
     } catch (error) {
       alert(error.response?.data?.detail || "Invalid credentials!");

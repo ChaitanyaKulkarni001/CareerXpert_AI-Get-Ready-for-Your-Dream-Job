@@ -6,14 +6,16 @@ import NotFound from './Components/NotFound';
 import ProtectedRoute from '../components/ProtectedRoute'
 import Login from './Components/Logins/Login';
 import SignUp from './Components/Logins/SignUp';
+import Layout from './Components/Layout/Layout';
 
 function App() {
 
 
   return (
 
-    <Router>    
+    <Router>
     <Routes>
+    <Route element={<Layout />}>
         <Route path="/" element={<Index />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signUp" element={<SignUp />} />
@@ -24,6 +26,7 @@ function App() {
           <AI_Interview />
         } />
         <Route path="*" element={<NotFound />} />
+        </Route>
     </Routes>
   </Router>
   )
