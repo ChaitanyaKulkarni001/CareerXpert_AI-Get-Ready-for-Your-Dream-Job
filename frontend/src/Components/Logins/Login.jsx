@@ -33,6 +33,7 @@ const Login = () => {
           <div className="absolute inset-0 border-t border-gray-300 top-1/2 transform -translate-y-1/2"></div>
         </div>
 
+
         <Form />
 
         <p className="mt-5 text-center text-gray-600">
