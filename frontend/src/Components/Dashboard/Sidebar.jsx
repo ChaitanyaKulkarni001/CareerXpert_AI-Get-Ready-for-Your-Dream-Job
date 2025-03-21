@@ -10,26 +10,25 @@ const Sidebar = () => {
   const navigate = useNavigate();
 
   const menuItems = [
-    { path: "/dashboard", title: "Dashboard", icon: <LayoutDashboard size={20} /> },
-    { path: "/dashboard/practice-interview", title: "Practice Interview", icon: <BookOpen size={20} /> },
-    { path: "/dashboard/follow-up-interview", title: "Follow-Up Interview", icon: <Repeat size={20} /> },
-    { path: "/dashboard/specific-role-interview", title: "Specific Role Interview", icon: <Briefcase size={20} /> },
-    { path: "/dashboard/one-minute-question", title: "One-Minute Interview", icon: <span className="text-xl">⏱️</span> },
-    { path: "/dashboard/situation-based-questions", title: "Quick Think", icon: <span className="text-xl">💡</span> },
-    { path: "/dashboard/mock-interview", title: "Mock Interview", icon: <Users size={20} /> },
-    { path: "/dashboard/talkmate", title: "Let's Connect & Speak ", icon: <span className="text-xl">📞</span> },
-
-    { path: "/dashboard/debate", title: "Debate", icon: <span className="text-xl">🐏</span> },
-
-    { path: "/dashboard/quiz", title: "Take a Quiz ", icon: <span className="text-xl">🕸️</span> },
-    { path: "/dashboard/coding-quiz", title: "Code Quiz ", icon: <span className="text-xl">🕸️</span> },
-    { path: "/dashboard/resume-check", title: "Analyze the Resume ", icon: <span className="text-xl">🧠</span> },
-    { path: "/dashboard/group-discussion", title: "Group Discussion ", icon: <span className="text-xl">🧠</span> },
-
-    { path: "/dashboard/history", title: "History ", icon: <span className="text-xl">👴🏻</span> },
-
+    { path: "/dashboard", title: "Dashboard", icon: <LayoutDashboard size={20} /> }, // 📊
+    { path: "/dashboard/practice-interview", title: "Practice Interview", icon: <BookOpen size={20} /> }, // 📖
+    { path: "/dashboard/follow-up-interview", title: "Follow-Up Interview", icon: <Repeat size={20} /> }, // 🔄
+    { path: "/dashboard/specific-role-interview", title: "Specific Role Interview", icon: <Briefcase size={20} /> }, // 🎯
+    { path: "/dashboard/one-minute-question", title: "Rapid Fire", icon: <span className="text-xl">⚡</span> }, // ⚡ (Fast-paced)
+    { path: "/dashboard/situation-based-questions", title: "Quick Think", icon: <span className="text-xl">🧠</span> }, // 🧠 (Thinking)
+    { path: "/dashboard/mock-interview", title: "Mock Interview", icon: <Users size={20} /> }, // 🎭 (Role-playing)
+    { path: "/dashboard/talkmate", title: "Live GD", icon: <span className="text-xl">🎤</span> }, // 🎤 (Discussion)
+  
+    { path: "/dashboard/debate", title: "Debate", icon: <span className="text-xl">⚖️</span> }, // ⚖️ (Debating/Arguments)
+  
+    { path: "/dashboard/quiz", title: "Take a Quiz", icon: <span className="text-xl">❓</span> }, // ❓ (Quiz)
+    { path: "/dashboard/coding-quiz", title: "Code Quiz", icon: <span className="text-xl">💻</span> }, // 💻 (Coding-related)
+    { path: "/dashboard/resume-check", title: "Analyze the Resume", icon: <span className="text-xl">📄</span> }, // 📄 (Resume)
+    { path: "/dashboard/group-discussion", title: "Live GD", icon: <span className="text-xl">🗣️</span> }, // 🗣️ (Talking)
+  
+    { path: "/dashboard/history", title: "History", icon: <span className="text-xl">📜</span> }, // 📜 (Past records)
   ];
-
+  
   const handleLogout = () => {
     localStorage.removeItem(ACCESS_TOKEN);
     localStorage.removeItem("user");

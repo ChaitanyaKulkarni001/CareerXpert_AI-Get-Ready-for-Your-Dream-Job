@@ -363,7 +363,7 @@ class ExtractResume(APIView):
         
         pdf_file = request.FILES['pdf']
         file_path = default_storage.save(pdf_file.name, pdf_file)
-
+        print("1")
         text = ""
         try:
             with pdfplumber.open(file_path) as pdf:
@@ -379,12 +379,45 @@ class ExtractResume(APIView):
             genai.configure(api_key="AIzaSyAnpEybMeLXj5UZ3KGAMiG-9d_cxpdhto8")
             model = genai.GenerativeModel("gemini-1.5-flash")
             # return Response({"text": text}, status=status.HTTP_200_OK)
-            analysis_prompt = f"I am conducting an Interview, i have a resume of the interviewee , I have extract text from it and the interviewee wants me to give pros and conse of his resume, the text extracted is  {text}, provide the details like pros ,cons of the resume, Do not provide any other text, give as a human is explaining to the interviewee in a friendly tone."
+            analysis_prompt = f"I am conducting an Interview, i have a resume of the interviewee , I have extract text from it and the interviewee wants me to give pros and conse of his resume, the text extracted is  {text}, Return the result as a valid JSON object with keys Pros, Cons, and LatexCode. Do not wrap your answer in triple backticks or any markdown. Ensure that any backslashes, newlines, or quotes in the LaTeX code are properly escaped (e.g., use \\\\ for each backslash and \\n for newlines) Return the result as a valid JSON object with keys: Pros, Cons, LatexCode. Do not include any markdown formatting such as triple backticks (```) or any extra text. Only output the raw JSON.      "
             response = model.generate_content(analysis_prompt)
             content = response.text
-            return Response({"text": content}, status=status.HTTP_200_OK)
+            print("2")
+            print(content)
+            content = content.replace('\\', '\\\\')
+            try:
+                python_object = json.loads(content)
+            except Exception as e:
+                print("error in json load ", e)
+
+            print(python_object.keys())
+            print("3")
+            # Within your view after generating the response:
+            try:
+                
+                InteractionHistory.objects.create(
+                    user=request.user,
+                    interaction_type='RESUME',  # or appropriate type
+                    question = "No Question",
+                    transcription = text,
+                    ai_response="Provides detailed analysis",
+                    metadata={
+                            'Pros': python_object['Pros'],
+                            'Cons': python_object['Cons'],
+                            'LatexCode' : python_object['LatexCode']
+                            }  # add extra info if needed
+                    
+                )
+                print("5")
+            except Exception as e:
+                print("error ",e)
+                
+
+            return Response({"Pros": python_object['Pros'],"Cons": python_object['Cons'],"LatexCode": python_object['LatexCode']}, status=status.HTTP_200_OK)
+
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+           
 
 
 class ExtractResumeText(APIView):

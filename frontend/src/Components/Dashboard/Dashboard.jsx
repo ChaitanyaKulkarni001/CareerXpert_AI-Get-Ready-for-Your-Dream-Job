@@ -112,13 +112,13 @@ const sections = [
         isImage: true 
       },
       { 
-        path: "/dashboard/role-based-interview", 
+        path: "/dashboard/specific-role-interview", 
         title: "Role Based Interview", 
         icon:  RoleInt, 
         isImage: true
       },
-      { path: "/dashboard/quick-think", title: "Situation-Based Interview", icon: SituBasedInterview, isImage: true },
-      { path: "/dashboard/rapid-fire", title: "Rapid Fire", icon: RapidFire, isImage: true },
+      { path: "/dashboard/situation-based-questions", title: "Situation-Based Interview", icon: SituBasedInterview, isImage: true },
+      { path: "/dashboard/one-minute-question", title: "Rapid Fire", icon: RapidFire, isImage: true },
     ],
   },
   {
@@ -134,7 +134,7 @@ const sections = [
     title: "Resume Section",
     features: [
       { 
-        path: "/dashboard/analyze-resume", 
+        path: "/dashboard/resume-check", 
         title: "Analyze Resume", 
         icon: ResumeAnalyze, 
         isImage: true 
@@ -144,8 +144,8 @@ const sections = [
   {
     title: "Group Discussion Section",
     features: [
-      { path: "/dashboard/group-discussion", title: "Group Discussion", icon: GdINt  , isImage: true },
-      { path: "/dashboard/talkmate", title: "Let's Connect & Speak", icon: GdLive, isImage: true },
+      { path: "/dashboard/group-discussion", title: "AI powered Group Discussion", icon: GdINt  , isImage: true },
+      { path: "/dashboard/talkmate", title: "Live Group Discussion", icon: GdLive, isImage: true },
     ],
   },
  
