@@ -1,3 +1,4 @@
+
 // import React from 'react'
 // import Footer from '../Layout/Footer'
 // import Header from '../Layout/Header'
@@ -5,7 +6,7 @@
 
 // const SignUp = () => {
 
-  
+
 
 //   return (
 //     <div>
@@ -148,6 +149,8 @@
 // }
 
 // export default SignUp
+
+
 import React from 'react';
 import RegisterForm from './RegisterForm';
 
@@ -205,8 +208,6 @@ const SignUp = () => {
       </section>
 
       {/* Responsive Debugging Helper */}
-      
-
       {/* Scripts */}
       <script src="theme/plugins/swiper/swiper-bundle.js"></script>
       <script src="theme/plugins/shufflejs/shuffle.js"></script>
