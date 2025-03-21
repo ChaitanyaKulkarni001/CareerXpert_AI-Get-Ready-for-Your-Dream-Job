@@ -1,6 +1,8 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect,useContext } from "react";
 import { Clock } from "lucide-react"
+import { ThemeContext } from "../ThemeContext";
 function AudioRecorder({ onAudioSubmit, timeLimit = 60 }) {
+  const theme = useContext(ThemeContext);
   const [isRecording, setIsRecording] = useState(false);
   const [audioBlob, setAudioBlob] = useState(null);
   const [elapsedTime, setElapsedTime] = useState(0);
@@ -73,7 +75,8 @@ function AudioRecorder({ onAudioSubmit, timeLimit = 60 }) {
   };
 
   return (
-    <div className="audio-recorder max-w-xl mx-auto mt-10 p-6 border border-gray-200 rounded-lg shadow-lg bg-gray-800">
+    <div className={`audio-recorder max-w-xl mx-auto mt-10 p-6 rounded-lg shadow-lg  
+       `}>
       {/* <h2 className="text-2xl font-semibold text-center mb-6">Audio Recorder</h2> */}
 
       <div className="flex flex-col items-center mb-6">
