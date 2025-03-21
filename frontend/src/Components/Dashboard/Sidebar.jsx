@@ -75,12 +75,12 @@ const Sidebar = () => {
     { path: "/dashboard/one-minute-question", title: "One-Minute Interview", icon: <span className="text-xl">⏱️</span> },
     { path: "/dashboard/situation-based-questions", title: "Quick Think", icon: <span className="text-xl">💡</span> },
     { path: "/dashboard/mock-interview", title: "Mock Interview", icon: <Users size={20} /> },
-    { path: "/dashboard/talkmate", title: "Let's Connect & Speak ", icon: <span className="text-xl">📞</span> },
-    { path: "/dashboard/quiz", title: "Take a Quiz ", icon: <span className="text-xl">🕸️</span> },
-    { path: "/dashboard/coding-quiz", title: "Code Quiz ", icon: <span className="text-xl">🕸️</span> },
-    { path: "/dashboard/resume-check", title: "Analyze the Resume ", icon: <span className="text-xl">🧠</span> },
-    { path: "/dashboard/group-discussion", title: "Group Discussion ", icon: <span className="text-xl">🧠</span> },
-    { path: "/dashboard/history", title: "History ", icon: <span className="text-xl">👴🏻</span> },
+    // { path: "/dashboard/talkmate", title: "Let's Connect & Speak ", icon: <span className="text-xl">📞</span> },
+    // { path: "/dashboard/quiz", title: "Take a Quiz ", icon: <span className="text-xl">🕸️</span> },
+    // { path: "/dashboard/coding-quiz", title: "Code Quiz ", icon: <span className="text-xl">🕸️</span> },
+    // { path: "/dashboard/resume-check", title: "Analyze the Resume ", icon: <span className="text-xl">🧠</span> },
+    // { path: "/dashboard/group-discussion", title: "Group Discussion ", icon: <span className="text-xl">🧠</span> },
+    // { path: "/dashboard/history", title: "History ", icon: <span className="text-xl">👴🏻</span> },
   ];
 
   const handleLogout = () => {
@@ -92,7 +92,7 @@ const Sidebar = () => {
 
   return (
     <div className="w-[310px]  h-screen bg-gray-900 text-white p-6 shadow-lg rounded-r-lg flex flex-col">
-      <h2 className="text-2xl font-semibold mb-6 text-center bg-gradient-to-r from-cyan-400 to-purple-500 text-transparent bg-clip-text">
+      <h2 className="text-2xl font-semibold mb-6 text-center  text-transparent bg-clip-text">
         Dashboard
       </h2>
       <nav className="flex-1 overflow-y-auto space-y-2 scrollbar-thin scrollbar-thumb-black scrollbar-track-gray-900">
@@ -103,11 +103,7 @@ const Sidebar = () => {
             to={item.path}
             className={({ isActive }) =>
               `flex items-center gap-3 p-3 rounded-lg text-lg font-medium transition-all duration-300
-              ${
-                isActive
-                  ? "bg-gradient-to-r from-blue-600 to-purple-500 shadow-[0_0_15px_rgba(0,255,255,0.5)]"
-                  : "hover:shadow-[0_0_12px_rgba(0,255,255,0.5)] hover:border-cyan-400"
-              }`
+            `
             }
           >
             {item.icon}
