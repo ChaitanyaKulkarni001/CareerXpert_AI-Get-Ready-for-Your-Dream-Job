@@ -34,4 +34,7 @@ urlpatterns = [
     
     #  User History
     path('user-history/',UserHistory.as_view(),name='user-history'),
+    
+    
+    path('debateData/', DebateData.as_view(), name='debate-data'),
 ]

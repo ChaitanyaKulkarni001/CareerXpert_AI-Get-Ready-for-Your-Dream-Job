@@ -544,3 +544,12 @@ class UserHistory(APIView):
             "metadata": record.metadata
         } for record in history]
         return Response(serialized_data)
+
+
+class DebateData(APIView):
+    def post(self, request, format=None):
+        serializer = DebateEntrySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

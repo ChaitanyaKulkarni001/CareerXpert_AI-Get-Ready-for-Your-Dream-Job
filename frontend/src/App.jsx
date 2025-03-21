@@ -28,6 +28,7 @@
   import GroupDisccusion from './Components/GroupDisccusion/GroupDisccusion';
   import History from './Components/History/History';
   import Debate from './Components/VideoCall/Debate';
+  import DebateConventos from "./DebateConventos"
 
   function Logout() {
 
@@ -87,7 +88,8 @@
               {/* History */}
               <Route path="history" element={<History />} />  
               {/* Debate */}
-              <Route path="debate" element={<Debate />} />   
+              <Route path="debate" element={<Debate />}  />   
+              <Route path="debate/start" element={<DebateConventos />}  />   
 
             </Route>
           </Route>

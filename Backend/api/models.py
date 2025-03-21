@@ -61,3 +61,13 @@ class InteractionHistory(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.interaction_type} @ {self.timestamp}"
+
+
+
+class DebateEntry(models.Model):
+    topic = models.CharField(max_length=255)
+    user_side = models.CharField(max_length=50)  # e.g., 'positive' or 'negative'
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.topic} - {self.user_side}"

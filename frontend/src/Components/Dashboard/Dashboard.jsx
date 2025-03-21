@@ -82,11 +82,18 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Repeat, Briefcase, Clock, Lightbulb, Users, Brain } from "lucide-react";
 // import PractiseInterview from "../../assets/PracriseInterview.jpg"; // Ensure correct file name and extension
-// import FollowUpInterview from "../../assets/FollowInterview.jpg";
-// import RoleBasedInterview from "../../assets/RoleBased.jpg";
-// import RapidFire from "../../assets/RapidFire.jpg";
-// import RapidFire from "../../assets/RapidFire.jpg";
-// import RapidFire from "../../assets/RapidFire.jpg";
+import MockInterview from "../../assets/MockInt.jpg";
+import SituBasedInterview from "../../assets/SituBased.jpg";
+import RapidFire from "../../assets/RapidFire.jpg";
+import FollowUp from "../../assets/FollowInt.jpg";
+import Practise from "../../assets/PracticeInt.jpg";
+import AptiQuiz from "../../assets/Aptiquiz.jpg"
+import LangQuiz from "../../assets/Langquiz.jpg"
+import ResumeAnalyze from "../../assets/Resume.jpg"
+import RoleInt from "../../assets/RoleInt.jpg"
+import GdINt from "../../assets/AiGd.jpg"
+import GdLive from "../../assets/LiveGd.jpg"
+
 // Mark a feature with "isImage" so you know to style it as a full-cover image
 const sections = [
   {
@@ -95,38 +102,32 @@ const sections = [
       {
         path: "/dashboard/practice-interview",
         title: "Practice Interview",
-        icon: "",
+        icon: Practise,
         isImage: true,
       },
       { 
         path: "/dashboard/follow-up-interview", 
         title: "Follow-Up Interview", 
-        icon: "", 
+        icon: FollowUp, 
         isImage: true 
       },
       { 
         path: "/dashboard/role-based-interview", 
         title: "Role Based Interview", 
-        icon:  "", 
+        icon:  RoleInt, 
         isImage: true
       },
+      { path: "/dashboard/quick-think", title: "Situation-Based Interview", icon: SituBasedInterview, isImage: true },
+      { path: "/dashboard/rapid-fire", title: "Rapid Fire", icon: RapidFire, isImage: true },
     ],
   },
   {
     title: "Quiz Section",
     features: [
-      { 
-        path: "/dashboard/rapid-fire", 
-        title: "Rapid Fire", 
-        icon: "", 
-        isImage: true
-      },
-      { 
-        path: "/dashboard/quick-think", 
-        title: "Quick Think", 
-        icon: <Lightbulb size={40} />, 
-        isImage: false 
-      },
+      
+      
+      { path: "/dashboard/quiz", title: "Aptitude Quiz", icon: AptiQuiz, isImage: true },
+      { path: "/dashboard/coding-quiz", title: "Lang-Based Quiz", icon: LangQuiz, isImage: true },
     ],
   },
   {
@@ -135,19 +136,27 @@ const sections = [
       { 
         path: "/dashboard/analyze-resume", 
         title: "Analyze Resume", 
-        icon: <Brain size={40} />, 
-        isImage: false 
+        icon: ResumeAnalyze, 
+        isImage: true 
       },
     ],
   },
+  {
+    title: "Group Discussion Section",
+    features: [
+      { path: "/dashboard/group-discussion", title: "Group Discussion", icon: GdINt  , isImage: true },
+      { path: "/dashboard/talkmate", title: "Let's Connect & Speak", icon: GdLive, isImage: true },
+    ],
+  },
+ 
   {
     title: "Mock Interview",
     features: [
       { 
         path: "/dashboard/mock-interview", 
         title: "Mock Interview", 
-        icon: <Users size={40} />, 
-        isImage: false 
+        icon: MockInterview, 
+        isImage: true
       },
     ],
   },

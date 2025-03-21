@@ -42,3 +42,13 @@ class ProgrammingLanguageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProgrammingLanguage
         fields = ["id", "name"]
+
+
+class DebateEntrySerializer(serializers.ModelSerializer):
+    # Optionally, you can map the incoming "userSide" key to the model field "user_side"
+    userSide = serializers.CharField(source="user_side")
+
+    class Meta:
+        model = DebateEntry
+        # We expose id, topic and userSide (which maps to user_side)
+        fields = ['id', 'topic', 'userSide']
