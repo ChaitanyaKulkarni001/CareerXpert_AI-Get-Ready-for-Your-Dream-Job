@@ -65,18 +65,54 @@ const About = () => {
       />
 
       {/* Button style override */}
-      {/* <st/style> */}
+      <style jsx>{`
+        .btn-aws {
+          display: inline-block;
+          background-color: black;
+          color: white;
+          padding: 0.75rem 1.5rem;
+          border-radius: 9999px;
+          font-weight: 600;
+          transition: all 0.3s ease;
+          text-decoration: none;
+        }
+        .btn-aws:hover {
+          background-color: white;
+          color: black;
+          transform: scale(1.05);
+          box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+        }
+      `}</style>
+
+      {/* Animated Hero Section */}
+      <style jsx>{`
+        @keyframes smoothGradient {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }
+      `}</style>
       <section
         className="page-hero py-16"
-      
+        style={{
+          background: 'linear-gradient(270deg, #0000FF, #FFB6C1, #8A2BE2)',
+          backgroundSize: '200% 200%',
+          animation: 'smoothGradient 8s ease infinite'
+        }}
       >
         <div className="container mx-auto">
           <div className="text-left">
            
           </div>
           <div className="page-hero-content mx-auto max-w-[768px] text-left">
-            <h1 className="mb-5 mt-8 text-black">About CareerXpert AI</h1>
-            <p className="text-black">
+            <h1 className="mb-5 mt-8 text-white">About CareerXpert AI</h1>
+            <p className="text-white">
               We harness the power of AI to transform your interview preparation.
               Our innovative tools simulate real interview scenarios, provide personalized feedback,
               and help you build the confidence you need to succeed.
