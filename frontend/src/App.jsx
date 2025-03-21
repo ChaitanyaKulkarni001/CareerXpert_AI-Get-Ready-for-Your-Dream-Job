@@ -19,9 +19,20 @@ function App() {
         <Route path="/" element={<Index />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signUp" element={<SignUp />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/about" element={
+            <ProtectedRoute>
+              <About />
+            </ProtectedRoute>
+          } />
         <Route path="/practice" element={
           // <ProtectedRoute>
           //   <AI_Interview />
+          // </ProtectedRoute>
+          <AI_Interview />
+        } />
+        <Route path="/dashboard" element={
+          // <ProtectedRoute>
           // </ProtectedRoute>
           <AI_Interview />
         } />
