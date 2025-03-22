@@ -37,4 +37,7 @@ urlpatterns = [
     
     
     path('debateData/', DebateData.as_view(), name='debate-data'),
+
+#created quiz by admin
+     path('api/quiz/', ListCreateQuizView.as_view(), name='create_quiz'),
 ]

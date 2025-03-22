@@ -52,3 +52,19 @@ class DebateEntrySerializer(serializers.ModelSerializer):
         model = DebateEntry
         # We expose id, topic and userSide (which maps to user_side)
         fields = ['id', 'topic', 'userSide']
+
+
+
+class QuizSerializer(serializers.ModelSerializer):
+    questions = QuestionSerializer(many=True, read_only=True)
+    question_ids = serializers.ListField(write_only=True, child=serializers.IntegerField())
+
+    class Meta:
+        model = Quiz
+        fields = ['id', 'title', 'language', 'questions', 'question_ids']
+
+    def create(self, validated_data):
+        question_ids = validated_data.pop('question_ids', [])
+        quiz = Quiz.objects.create(**validated_data)
+        quiz.questions.set(Question.objects.filter(id__in=question_ids))
+        return quiz

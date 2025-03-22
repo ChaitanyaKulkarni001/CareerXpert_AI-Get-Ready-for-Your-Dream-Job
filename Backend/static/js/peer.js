@@ -818,3 +818,56 @@ function removeVideo(video){
     // remove it
     videoWrapper.parentNode.removeChild(videoWrapper);
 }
+
+
+
+let localStream = null;
+let screenStream = null;
+let isScreenSharing = false;
+let peerConnection = null; // Ensure this is initialized properly
+
+const startScreenShare = async () => {
+    try {
+        screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+        const videoTrack = screenStream.getVideoTracks()[0];
+
+        // Send screen stream to peers, but keep local video unchanged
+        const sender = peerConnection.getSenders().find(s => s.track.kind === "video");
+        if (sender) sender.replaceTrack(videoTrack);
+
+        // Keep showing user's own camera feed in their local video element
+        if (localStream) {
+            document.getElementById("local-video").srcObject = localStream;
+        }
+
+        isScreenSharing = true;
+
+        // Stop sharing when user ends it
+        videoTrack.onended = () => stopScreenShare();
+    } catch (err) {
+        console.error("Error sharing screen:", err);
+    }
+};
+
+const stopScreenShare = () => {
+    if (!isScreenSharing) return;
+
+    const videoTrack = localStream.getVideoTracks()[0];
+    const sender = peerConnection.getSenders().find(s => s.track.kind === "video");
+    if (sender) sender.replaceTrack(videoTrack);
+
+    // Restore the local camera feed in the remote peers
+    document.getElementById("local-video").srcObject = localStream;
+
+    isScreenSharing = false;
+    if (screenStream) screenStream.getTracks().forEach(track => track.stop());
+};
+
+// Event listener for screen sharing button
+document.getElementById("btn-share-screen").addEventListener("click", () => {
+    if (!isScreenSharing) {
+        startScreenShare();
+    } else {
+        stopScreenShare();
+    }
+});

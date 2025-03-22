@@ -553,3 +553,20 @@ class DebateData(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+from rest_framework import generics
+from .models import Quiz, Question
+from .serializers import QuizSerializer, QuestionSerializer
+from rest_framework.permissions import IsAdminUser
+
+
+
+class ListCreateQuestionView(generics.ListCreateAPIView):
+    queryset = Question.objects.all()
+    serializer_class = QuestionSerializer
+    permission_classes = [IsAdminUser]  # Only Admin can add Questions
+
+class ListCreateQuizView(generics.ListCreateAPIView):
+    queryset = Quiz.objects.all()
+    serializer_class = QuizSerializer
+    permission_classes = [IsAdminUser]

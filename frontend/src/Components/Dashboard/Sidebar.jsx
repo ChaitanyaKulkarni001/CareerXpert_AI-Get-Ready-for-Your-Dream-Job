@@ -22,6 +22,8 @@ const Sidebar = () => {
     { path: "/dashboard/resume-check", title: "Analyze the Resume ", icon: <span className="text-xl">🧠</span> },
     { path: "/dashboard/group-discussion", title: "Group Discussion ", icon: <span className="text-xl">🧠</span> },
     { path: "/dashboard/history", title: "History ", icon: <span className="text-xl">👴🏻</span> },
+    { path: "/dashboard/create-quiz", title: "Create Quiz ", icon: <span className="text-xl">🕸️</span> },
+
   ];
 
   const handleLogout = () => {
