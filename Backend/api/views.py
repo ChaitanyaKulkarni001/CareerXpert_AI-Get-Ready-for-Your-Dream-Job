@@ -318,7 +318,7 @@ class GetAptiQuestions(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        questions = AptiQuestion.objects.all().order_by('?')[:2] # Change this number for getting numbers of random X questions    
+        questions = AptiQuestion.objects.all().order_by('?')[:10] # Change this number for getting numbers of random X questions    
         serializer = AptiQuestionSerializer(questions, many=True)
         return Response(serializer.data)
     
@@ -603,3 +603,34 @@ class ComplaintView(viewsets.ModelViewSet):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class GetRooms(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        rooms = DebateEntry.objects.all().order_by('-created_at')
+        serializer = DebateEntrySerializer(rooms, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    
+# Debate topic 
+
+        
+class DebateTopix(APIView):
+    permission_classes = [IsAuthenticated]
+    parser_classes = (MultiPartParser, FormParser)
+    
+    def get(self, request, *args, **kwargs):
+        try :
+            genai.configure(api_key="AIzaSyAnpEybMeLXj5UZ3KGAMiG-9d_cxpdhto8")
+            model = genai.GenerativeModel("gemini-1.5-flash")
+            # return Response({"text": text}, status=status.HTTP_200_OK)
+            analysis_prompt = f"Generate a Group Debate Topic, for a group of 4 people, the topic should be relevant and should be able to discuss for 10 minutes, Give response only text of topic, no other text, ensure variety in each response. Just provide a single topic"
+            response = model.generate_content(analysis_prompt)
+            content = response.text
+            
+            return Response({"text": content}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

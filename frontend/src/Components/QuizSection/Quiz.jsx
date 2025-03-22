@@ -59,9 +59,9 @@ const Quiz = () => {
     };
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
-            <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-2xl">
-                <h1 className="text-3xl font-bold text-center mb-4">Quiz</h1>
+        <div className="min-h-screen bg-gray-800 flex flex-col items-center justify-center ">
+            <div className="bg-gray-900 shadow-lg rounded-lg p-6 w-full max-w-2xl">
+                <h1 className="text-3xl text-white font-bold text-center mb-4">Quiz</h1>
 
                 {!quizStarted ? (
                     <button
@@ -84,7 +84,7 @@ const Quiz = () => {
                 ) : (
                     <div>
                         <div className="flex justify-between items-center mb-4">
-                            <h2 className="text-xl font-semibold">
+                            <h2 className="text-xl text-white    font-semibold">
                                 Question {currentQuestionIndex + 1} / {questions.length}
                             </h2>
                             <p className="text-red-500 font-bold">⏳ {Math.floor(timer / 60)}:{String(timer % 60).padStart(2, "0")}</p>
@@ -92,7 +92,7 @@ const Quiz = () => {
 
                         <p className="text-lg mb-4">{questions[currentQuestionIndex].question}</p>
 
-                        <div className="grid gap-3">
+                        <div className="grid gap-3 text-black">
                             {Object.entries(questions[currentQuestionIndex].options).map(([key, value]) => (
                                 <button
                                     key={key}

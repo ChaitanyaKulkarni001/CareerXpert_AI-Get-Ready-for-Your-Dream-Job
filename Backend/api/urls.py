@@ -44,4 +44,6 @@ urlpatterns = [
     # Complaint
     path('', include(router2.urls)), 
     
+    path('get-rooms/',GetRooms.as_view(),name='get-rooms'),
+    path('get-debate-topic/',DebateTopix.as_view(),name='get-debate-topic'),
 ]

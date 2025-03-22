@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import AudioRecorder from "../Recordings/AudioRecorder";
 import api from "../../api";
 import TextToSpeech from "../Recordings/Helper/TextToSpeech";
-
+import { ThemeContext } from "../ThemeContext";
 const OneMinuteQuestion = () => {
   const [response, setResponse] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -50,10 +50,11 @@ const OneMinuteQuestion = () => {
     setTimeLeft(60);
     generateRandomQuestion();
   };
+  const theme = useContext(ThemeContext)
 
   return (
-    <div className="max-w-xl mx-auto p-6 shadow-lg rounded-2xl border border-gray-200">
-      <h2 className="text-xl font-semibold mb-4">One-Minute Interview</h2>
+    <div className="max-w-xl mx-auto p-6 shadow-lg rounded-2xl ">
+      <div className="text-4xl font-bold ">One-Minute Interview</div>
       <p className="mb-3 font-medium">Question: {question}</p>
       
       <AudioRecorder onAudioSubmit={handleAudioSubmit} timeLimit={60} />

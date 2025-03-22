@@ -68,7 +68,7 @@ function ResumeChecker() {
       {/* Heading */}
       <div className="mb-8 text-center">
         <h1 className={`text-4xl font-extrabold tracking-wide`}>
-          <p className={`${theme=='dim'?'text-white':'text-black'}`}>Resume Analyzer</p>
+          <p className={`${theme=="dim"?"text-black":"text-white"} `}>Resume Analyzer</p>
         </h1>
         <p className="mt-2 text-lg text-gray-300">
           Upload your resume and extract insights
@@ -121,7 +121,10 @@ function ResumeChecker() {
       {/* Display Response */}
       {responseData && (
         <div className="mt-8 w-full max-w-3xl p-6 bg-gray-800 border border-blue-500 rounded-xl shadow-lg">
-          <h3 className={`text-2xl  ${theme==='dim'?"text-white":"text-black"} font-bold mb-4`}>Analysis Result:</h3>
+         <  p className={`text-2xl font-bold mb-4 ${theme === 'dim' ? 'text-white' : 'text-black'}`}>
+  Analysis Result:
+</p>
+
           <div className="space-y-4">
             <p className="text-lg">
               <span className="font-semibold text-blue-300">Pros:</span>{" "}

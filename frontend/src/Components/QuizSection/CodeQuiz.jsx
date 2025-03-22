@@ -457,7 +457,7 @@ const CodeQuiz = () => {
                 }`}
               >
                 <span
-                  className={`inline-block p-2 rounded ${
+                  className={`inline-block text-black p-2 rounded ${
                     msg.from === "user"
                       ? "bg-blue-500 text-white"
                       : "bg-gray-300 text-black"
@@ -469,13 +469,13 @@ const CodeQuiz = () => {
             ))}
           </div>
           {/* Chat input */}
-          <div className="flex">
-            <input
+          <div className="flex bg-black ">
+            <input 
               type="text"
               value={chatInput}
               onChange={(e) => setChatInput(e.target.value)}
               placeholder="Type your question..."
-              className="flex-grow border p-2 rounded-l focus:outline-none"
+              className="flex-grow border p-2 text-black rounded-l focus:outline-none"
             />
             <button
               onClick={handleSendMessage}
