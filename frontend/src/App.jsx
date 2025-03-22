@@ -29,7 +29,7 @@
   import History from './Components/History/History';
   import Debate from './Components/VideoCall/Debate';
   import DebateConventos from "./DebateConventos"
-
+import Report from './Components/Report/Report';
   function Logout() {
 
     localStorage.clear()
@@ -90,6 +90,7 @@
               {/* Debate */}
               <Route path="debate" element={<Debate />}  />   
               <Route path="debate/start" element={<DebateConventos />}  />   
+              <Route path="complain" element={<Report />}  />   
 
             </Route>
           </Route>

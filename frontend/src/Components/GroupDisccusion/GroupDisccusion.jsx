@@ -1,18 +1,20 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import Lottie from "lottie-react";
 import GirlAnimation from "../../assets/Animations/GirlAnimation.json";
 import BoyAnimation1 from "../../assets/Animations/BoyAnimation.json";
 import BoyAnimation2 from "../../assets/Animations/BoyAnimation2.json";
 import AudioRecorder from "../Recordings/AudioRecorder";
 import api from "../../api";
+import { ThemeContext } from "../ThemeContext";
 
 const participants = [
-  { name: "Sanchita", animation: GirlAnimation, voice: null },
-  { name: "Ankoor", animation: BoyAnimation1, voice: null },
+  { name: "Sanchita", animation: BoyAnimation1, voice: null },
+  { name: "Ankoor", animation: GirlAnimation, voice: null },
   { name: "Chaitanya", animation: BoyAnimation2, voice: null },
 ];
 
 const GroupDiscussion = () => {
+  const theme = useContext(ThemeContext)
   const [topic, setTopic] = useState("");
   const [discussionStarted, setDiscussionStarted] = useState(false);
   const [history, setHistory] = useState("");
@@ -23,6 +25,13 @@ const GroupDiscussion = () => {
   // NEW STATES FOR REAL-TIME SPEAKER FEEDBACK
   const [activeSpeaker, setActiveSpeaker] = useState(null);
   const [currentSentence, setCurrentSentence] = useState("");
+
+  // States for the Complaint form
+  const [showComplaintForm, setShowComplaintForm] = useState(false);
+  const [complaintName, setComplaintName] = useState("");
+  const [complaintReason, setComplaintReason] = useState("");
+  const [complaintImg, setComplaintImg] = useState(null);
+  const [complaintLoading, setComplaintLoading] = useState(false);
 
   const containerRef = useRef(null);
 
@@ -148,14 +157,44 @@ const GroupDiscussion = () => {
     });
   };
 
+  // Handle the submission of the complaint form.
+  const handleComplaintSubmit = async (e) => {
+    e.preventDefault();
+    const complaintData = new FormData();
+    complaintData.append("misbehaving_person", complaintName);
+    complaintData.append("reason", complaintReason);
+    if (complaintImg) {
+      complaintData.append("image", complaintImg);
+    }
+    setComplaintLoading(true);
+    try {
+      // Make the API call to report the complaint.
+      await api.post("api/report-complaint", complaintData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      // You can add any success handling here.
+      alert("Complaint submitted successfully!");
+      // Reset form values.
+      setComplaintName("");
+      setComplaintReason("");
+      setComplaintImg(null);
+      setShowComplaintForm(false);
+    } catch (error) {
+      console.error("Error submitting complaint:", error);
+      alert("There was an error submitting your complaint. Please try again.");
+    } finally {
+      setComplaintLoading(false);
+    }
+  };
+
   return (
     <div
       ref={containerRef}
-      className="w-full"
+      className="w-full bg-black"
       style={{ background: "#f0f0f0", height: "100vh" }}
     >
       {!discussionStarted ? (
-        <div className="text-center pt-20">
+        <div className={`text-center pt-20 ${theme=="dim"?"bg-gray-700":"bg-white"} `}>
           <h1 className="text-4xl font-bold mb-4">Group Discussion</h1>
           <h2 className="text-2xl mb-6">Topic: {topic}</h2>
           <button
@@ -191,8 +230,8 @@ const GroupDiscussion = () => {
                 <Lottie
                   animationData={participant.animation}
                   style={{
-                    width: activeSpeaker === participant.name ? 300 : 250,
-                    height: activeSpeaker === participant.name ? 300 : 250,
+                    width: activeSpeaker === participant.name ? 400 : 250,
+                    height: activeSpeaker === participant.name ? 400 : 250,
                   }}
                 />
                 <h3 className="mt-2 text-xl font-semibold">{participant.name}</h3>
@@ -224,6 +263,64 @@ const GroupDiscussion = () => {
             >
               Stop Discussion
             </button>
+          </div>
+        </div>
+      )}
+
+
+      {/* Complaint Form Modal */}
+      {showComplaintForm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white rounded-lg shadow-xl p-6 w-96">
+            <h2 className="text-2xl font-bold mb-4">Report a Complaint</h2>
+            <form onSubmit={handleComplaintSubmit}>
+              <div className="mb-4">
+                <label className="block text-gray-700 mb-2">
+                  Name of Misbehaving Person:
+                </label>
+                <input
+                  type="text"
+                  value={complaintName}
+                  onChange={(e) => setComplaintName(e.target.value)}
+                  className="w-full border border-gray-300 p-2 rounded"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700 mb-2">Reason:</label>
+                <textarea
+                  value={complaintReason}
+                  onChange={(e) => setComplaintReason(e.target.value)}
+                  className="w-full border border-gray-300 p-2 rounded"
+                  required
+                ></textarea>
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700 mb-2">Upload Image:</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setComplaintImg(e.target.files[0])}
+                  className="w-full"
+                />
+              </div>
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => setShowComplaintForm(false)}
+                  className="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded mr-2"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="bg-red-700 hover:bg-red-800 text-white py-2 px-4 rounded"
+                  disabled={complaintLoading}
+                >
+                  {complaintLoading ? "Submitting..." : "Submit Complaint"}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

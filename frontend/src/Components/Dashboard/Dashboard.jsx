@@ -78,7 +78,7 @@
 // export default Dashboard;
 
 
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Repeat, Briefcase, Clock, Lightbulb, Users, Brain } from "lucide-react";
 // import PractiseInterview from "../../assets/PracriseInterview.jpg"; // Ensure correct file name and extension
@@ -94,6 +94,7 @@ import RoleInt from "../../assets/RoleInt.jpg"
 import GdINt from "../../assets/AiGd.jpg"
 import GdLive from "../../assets/LiveGd.jpg"
 
+import { ThemeContext } from "styled-components";
 // Mark a feature with "isImage" so you know to style it as a full-cover image
 const sections = [
   {
@@ -161,19 +162,30 @@ const sections = [
     ],
   },
 ];
-
 const Dashboard = () => {
+  const theme = useContext(ThemeContext)
   return (
-    <div className="p-8 bg-gray-900 min-h-screen text-white">
+    <div
+    className={`p-8 min-h-screen transition-all duration-300 ${theme === "dim" ? "bg-white text-black" : "bg-gray-900 text-white"
+      }`} >
+
       {/* Dashboard Title */}
-      <h1 className="text-5xl font-extrabold text-orange-500 mb-8 text-left">
+      <h1
+        className={`text-5xl font-extrabold mb-8 text-left ${theme === "dim" ? "text-[#011638]" : "text-orange-500"
+          }`}
+      >
+
         Dashboard
       </h1>
 
       {sections.map((section, index) => (
         <div key={index} className="mb-12">
           {/* Section Heading */}
-          <h2 className="text-3xl font-bold text-blue-400 mb-6 text-left">
+          <h2
+            className={`text-3xl font-bold mb-6 text-left ${theme === "dim" ? "text-[#011638]" : "text-blue-400"
+              }`}
+          >
+
             {section.title}
           </h2>
 
@@ -183,8 +195,12 @@ const Dashboard = () => {
               <Link
                 key={feature.path}
                 to={feature.path}
-                className="bg-gray-800 border border-orange-500 rounded-xl overflow-hidden shadow-lg transition-all duration-300 transform hover:scale-105"
-              >
+                className={`border rounded-xl overflow-hidden shadow-lg transition-all duration-300 transform hover:scale-105 ${theme === "dim"
+                  ? "bg-white border-[#011638] text-black"
+                  : "bg-gray-800 border-orange-500 text-white"
+                }`}
+            >
+
                 {feature.isImage ? (
                   // The image container that covers the full upper part of the card
                   <div className="w-full h-48 overflow-hidden hover:animate-pulse">

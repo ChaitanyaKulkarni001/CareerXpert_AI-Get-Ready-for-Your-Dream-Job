@@ -52,3 +52,9 @@ class DebateEntrySerializer(serializers.ModelSerializer):
         model = DebateEntry
         # We expose id, topic and userSide (which maps to user_side)
         fields = ['id', 'topic', 'userSide']
+        
+        
+class ComplaintSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Complaint
+        fields = '__all__'

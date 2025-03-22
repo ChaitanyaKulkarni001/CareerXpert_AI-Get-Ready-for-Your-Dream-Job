@@ -586,3 +586,20 @@ class DebateData(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class ComplaintView(viewsets.ModelViewSet):
+    
+    queryset = Complaint.objects.all().order_by('-created_at')
+    serializer_class = ComplaintSerializer
+    parser_classes = (MultiPartParser, FormParser)
+    
+    def create(self, request, *args, **kwargs):
+        data = request.data.copy()
+        # Override or add the username field from the authenticated user (if available)
+        if request.user and request.user.is_authenticated:
+            data['username'] = request.user.username
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

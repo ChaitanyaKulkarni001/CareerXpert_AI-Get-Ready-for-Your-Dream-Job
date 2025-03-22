@@ -71,3 +71,17 @@ class DebateEntry(models.Model):
 
     def __str__(self):
         return f"{self.topic} - {self.user_side}"
+    
+# Complaint Model
+
+class Complaint(models.Model):
+    COMPLAINT_TYPES = (
+        ('GD', 'General Complaint'),
+        ('Debate', 'Debate Complaint'),
+        ('Platform', 'Platform Complaint'),
+    ) 
+    username = models.CharField(max_length=255)
+    complaint_type = models.CharField(max_length=20, choices=COMPLAINT_TYPES)
+    description = models.TextField()
+    violence_image = models.ImageField(upload_to='complaints/', blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)

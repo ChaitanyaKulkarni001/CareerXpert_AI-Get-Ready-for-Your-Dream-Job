@@ -24,7 +24,7 @@ const Sidebar = () => {
     { path: "/dashboard/quiz", title: "Take a Quiz", icon: <span className="text-xl">❓</span> }, // ❓ (Quiz)
     { path: "/dashboard/coding-quiz", title: "Code Quiz", icon: <span className="text-xl">💻</span> }, // 💻 (Coding-related)
     { path: "/dashboard/resume-check", title: "Analyze the Resume", icon: <span className="text-xl">📄</span> }, // 📄 (Resume)
-    { path: "/dashboard/group-discussion", title: "Live GD", icon: <span className="text-xl">🗣️</span> }, // 🗣️ (Talking)
+    { path: "/dashboard/group-discussion", title: "AI driven GD", icon: <span className="text-xl">🗣️</span> }, // 🗣️ (Talking)
   
     { path: "/dashboard/history", title: "History", icon: <span className="text-xl">📜</span> }, // 📜 (Past records)
   ];

@@ -7,6 +7,10 @@ from . import views
 router = DefaultRouter()
 router.register(r'aptiquestions', AptiQuestionViewSet)
 
+
+router2 = DefaultRouter()
+router2.register(r'complain', ComplaintView, basename='complain')
+
 urlpatterns = [
     path("ai-interview/", AIInterviewView.as_view(), name="ai-interview"),
     path("follow-up-interview/", FollowUpInterviewView.as_view(), name="follow-interview"),
@@ -37,4 +41,7 @@ urlpatterns = [
     
     
     path('debateData/', DebateData.as_view(), name='debate-data'),
+    # Complaint
+    path('', include(router2.urls)), 
+    
 ]
