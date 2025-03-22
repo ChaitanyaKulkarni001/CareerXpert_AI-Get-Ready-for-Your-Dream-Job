@@ -604,7 +604,12 @@ class ComplaintView(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
+    def get_queryset(self):
+        
+        """Restrict complaints to admins only"""
+        if self.request.user.is_staff:  # Allow only admin users
+            return Complaint.objects.all().order_by('-created_at')
+        return Complaint.objects.none()  # Return empty queryset for non-admins
 
 class GetRooms(APIView):
     permission_classes = [IsAuthenticated]
@@ -634,3 +639,15 @@ class DebateTopix(APIView):
             return Response({"text": content}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+class RateUsCreateView(generics.CreateAPIView):
+    queryset = Rating.objects.all()
+    serializer_class = RatingSerializer
+
+# Endpoint for admins to fetch all ratings
+class AdminRatingsListView(generics.ListAPIView):
+    queryset = Rating.objects.all().order_by('-created_at')
+    serializer_class = RatingSerializer
+    # permission_classes = [permissions.IsAdminUser]

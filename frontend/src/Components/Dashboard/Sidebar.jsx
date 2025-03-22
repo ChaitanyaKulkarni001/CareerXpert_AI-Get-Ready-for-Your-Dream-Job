@@ -27,6 +27,7 @@ const Sidebar = () => {
     { path: "/dashboard/group-discussion", title: "AI driven GD", icon: <span className="text-xl">🗣️</span> }, // 🗣️ (Talking)
   
     { path: "/dashboard/history", title: "History", icon: <span className="text-xl">📜</span> }, // 📜 (Past records)
+    { path: "/dashboard/review", title: "Review", icon: <span className="text-xl">📜</span> }, // 📜 (Past records)
   ];
   
   const handleLogout = () => {

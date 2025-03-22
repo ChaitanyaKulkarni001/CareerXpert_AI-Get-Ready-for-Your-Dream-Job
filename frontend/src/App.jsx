@@ -29,7 +29,12 @@
   import History from './Components/History/History';
   import Debate from './Components/VideoCall/Debate';
   import DebateConventos from "./DebateConventos"
-import Report from './Components/Report/Report';
+  import Report from './Components/Report/Report';
+  import CreateQuiz from './Components/Admin/CreateQuiz';
+  import Complaints from './Components/Admin/Complaints';
+import Review from './Components/Review/Review';
+import AdminRatings from './Components/Admin/AdminRatings';
+
   function Logout() {
 
     localStorage.clear()
@@ -70,6 +75,22 @@ import Report from './Components/Report/Report';
                 <AdminDashboard />
               </ProtectedRoute>
             } />
+           
+<Route path="/admin/quiz" element={
+              <ProtectedRoute>
+                <CreateQuiz />
+              </ProtectedRoute>
+            } />
+<Route path="/admin/complaints" element={
+              <ProtectedRoute>
+                <Complaints />
+              </ProtectedRoute>
+            } />
+<Route path="/admin/adminrating" element={
+              <ProtectedRoute>
+                <AdminRatings />
+              </ProtectedRoute>
+            } />
 
             <Route path="/dashboard" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
               <Route index element={<Dashboard />} />
@@ -87,6 +108,7 @@ import Report from './Components/Report/Report';
               <Route path="group-discussion" element={<GroupDisccusion />} />  {/* Resume Check */}
               {/* History */}
               <Route path="history" element={<History />} />  
+              <Route path="review" element={<Review />} />  
               {/* Debate */}
               <Route path="debate" element={<Debate />}  />   
               <Route path="debate/start" element={<DebateConventos />}  />   

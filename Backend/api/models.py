@@ -85,3 +85,14 @@ class Complaint(models.Model):
     description = models.TextField()
     violence_image = models.ImageField(upload_to='complaints/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+
+class Rating(models.Model):
+    username = models.CharField(max_length=100)
+    rating = models.PositiveSmallIntegerField()  # 1 to 5
+    feedback = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.username} - {self.rating} Stars"
