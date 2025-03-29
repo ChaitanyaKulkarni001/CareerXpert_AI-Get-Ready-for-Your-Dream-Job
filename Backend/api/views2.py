@@ -176,8 +176,7 @@ You are acting as an experienced job interviewer. The interview question is: '{q
             # Within your view after generating the response:
             InteractionHistory.objects.create(
                 user=request.user,
-                
-                interaction_type='SPECIFIC_ROLE_INTERVIEW',
+                interaction_type='FOLLOWUP_INTERVIEW',
                 question=question,
                 transcription=transcription,
                 ai_response=python_object['feedback'],
@@ -244,6 +243,7 @@ class SpecificRoleInterview(APIView):
             # Generate the interview question
             response = model.generate_content(analysis_prompt)
             content = response.text
+            
 
             return Response({"question": content}, status=status.HTTP_200_OK)
 
@@ -273,29 +273,27 @@ class OneMinuteQuestion(APIView):
             model = genai.GenerativeModel("gemini-1.5-flash")
             response = model.generate_content(analysis_prompt)
             content = response.text
-        
+            
+            
             try:
                 
                 InteractionHistory.objects.create(
                     user=request.user,
-                    interaction_type='RAPID_FIRE',  # or appropriate type
+                    interaction_type='SPECIFIC_ROLE_INTERVIEW',  # or appropriate type
                     question=question,
                     transcription=transcription,
                     ai_response=content,
                     metadata={'audio_file': audio_file.name,
-                           
+                            'rating': python_object['rating']
                             }  # add extra info if needed
                 )
             except Exception as e:
                 print("error ",e)
             
             
-        
+            
             return Response({"analysis": content, "transcription": transcription}, status=status.HTTP_200_OK)
 
-        
-        
-        
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -368,24 +366,35 @@ class GetQuizData(APIView):
         # Apply pagination manually
         paginator = self.pagination_class()
         paginated_questions = paginator.paginate_queryset(questions, request)
-        print("GET WUIX data")
-        try:
-                print("In database")
-                InteractionHistory.objects.create(
-                    user=request.user,
-                    interaction_type='CODE_QUIZ',  # or appropriate type
-                    transcription="No Transcription",
-                    ai_response="AI FEEDBACK",
-                    metadata={'attempted_qustions': "paginated_questions"
-                            }  # add extra info if needed
-                )
-        except Exception as e:
-            print("error ",e)
-            
-        
+
         # Serialize and return paginated response
         serializer = QuestionSerializer(paginated_questions, many=True)
-        return paginator.get_paginated_response(serializer.data)
+        response = paginator.get_paginated_response(serializer.data)
+    
+        try:
+            InteractionHistory.objects.create(
+                user=request.user,
+                interaction_type='QUIZ_ATTEMPT',  # Define the type of interaction
+                metadata={
+                    'language': language,
+                    'num_questions': len(paginated_questions)
+                }
+            )
+        except Exception as e:
+            print("Error logging interaction history:", e)
+
+        try:
+            QuizAttempt.objects.create(
+                user=request.user,
+                language=language,
+                total_questions=len(paginated_questions),
+            )
+        except Exception as e:
+            print("Error logging quiz attempt:", e)
+
+        # return paginator.get_paginated_response(serializer.data)
+
+        return response
     
 from django.core.files.storage import default_storage
 from pdf2image import convert_from_path
@@ -536,7 +545,21 @@ class AIASK(APIView):
             response = model.generate_content(analysis_prompt)
             content = response.text
             
+            try:
+                InteractionHistory.objects.create(
+                    user=request.user,
+                    interaction_type="AI_ASK",
+                    question=currentQuestion,
+                    transcription=UserQuery,
+                    ai_response=content,
+                    metadata={"topic": currentTopic, "history": aiAskHistory}
+                )
+            except Exception as e:
+                print("Error saving interaction history:", e)
+
             return Response({"text": content}, status=status.HTTP_200_OK)
+
+
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
@@ -556,6 +579,19 @@ class GroupDiscussionTopix(APIView):
             response = model.generate_content(analysis_prompt)
             content = response.text
             
+            try:
+                InteractionHistory.objects.create(
+                    user=request.user,
+                    interaction_type="GROUP_DISCUSSION_TOPIC",
+                    question="Generated Discussion Topic",
+                    ai_response=content,
+                    metadata={"request_type": "GD Topic Request"}
+                )
+            except Exception as e:
+                print("Error saving interaction history:", e)
+
+
+
             return Response({"text": content}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -588,8 +624,7 @@ class GroupDiscussion(APIView):
             )
             response = model.generate_content(analysis_prompt)
             content = response.text
-            print(content)
-            
+            # print(content)
             try:
                 InteractionHistory.objects.create(
                     user=request.user,
@@ -597,12 +632,11 @@ class GroupDiscussion(APIView):
                     question=topic,
                     transcription=transcription,
                     ai_response=content,
-                    metadata={"request_type": "GD Topic Request",
-                              "history": history}
+                    metadata={"audio_file": audio_file.name, "history": history}
                 )
             except Exception as e:
                 print("Error saving interaction history:", e)
-            
+
             # Optionally, include the user's transcription as part of the response for TTS if needed.
             return Response({"text": content, "userComment": transcription}, status=status.HTTP_200_OK)
         except Exception as e:
@@ -700,34 +734,66 @@ class AdminRatingsListView(generics.ListAPIView):
     queryset = Rating.objects.all().order_by('-created_at')
     serializer_class = RatingSerializer
     # permission_classes = [permissions.IsAdminUser]
-    
-    
 
-class GetSummaryResume(APIView):
+
+
+
+
+#To store the data, to store correct the answers and wrong answers of user 
+
+class SubmitQuiz(APIView):
     permission_classes = [IsAuthenticated]
-    parser_classes = (MultiPartParser, FormParser)
-    
-    
-    def post(self, request, *args, **kwargs):
-        Data = request.data.get("data", "")
-        print("Data is ",Data)
-        analysis_prompt = (
-    f"Using the following resume data: {Data}, please generate a concise, "
-    "professional summary that highlights key skills, experiences, and achievements. "
-    "Return your response as plain text without any additional formatting or commentary. (witout ``` or any other text)"
-)
 
+    def post(self, request):
         try:
-            
-            genai.configure(api_key="AIzaSyAnpEybMeLXj5UZ3KGAMiG-9d_cxpdhto8")
-            model = genai.GenerativeModel("gemini-1.5-flash")
-            
-            
-            response = model.generate_content(analysis_prompt)
-            content = response.text
-            print(content)
-            
-            # Optionally, include the user's transcription as part of the response for TTS if needed.
-            return Response({"text": content}, status=status.HTTP_200_OK)
+            language = request.data.get("language")
+            user_answers = request.data.get("user_answers", {})  # { "question_id": "selected_option" }
+
+            if not language or not user_answers:
+                return Response({"error": "Language and answers required"}, status=400)
+
+            # Fetch questions
+            questions = Question.objects.filter(language=language)
+            total_questions = questions.count()
+
+            correct_count = 0
+            review_data = {}
+
+            # Check answers
+            for question in questions:
+                correct_answer = question.correct_answer
+                user_answer = user_answers.get(str(question.id), None)
+
+                review_data[question.id] = {
+                    "question": question.text,
+                    "user_answer": user_answer,
+                    "correct_answer": correct_answer,
+                    "is_correct": user_answer == correct_answer,
+                }
+
+                if user_answer == correct_answer:
+                    correct_count += 1
+
+            # Calculate Score
+            score = (correct_count / total_questions) * 100
+
+            # Save Attempt
+            quiz_attempt = QuizAttempt.objects.create(
+                user=request.user,
+                language=language,
+                total_questions=total_questions,
+                correct_answers=correct_count,
+                score=score,
+                review_data=review_data
+            )
+
+            return Response({
+                "message": "Quiz submitted successfully!",
+                "score": score,
+                "correct_answers": correct_count,
+                "total_questions": total_questions,
+                "review_data": review_data,  # Allows frontend to show correct/wrong answers
+            }, status=status.HTTP_200_OK)
+
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

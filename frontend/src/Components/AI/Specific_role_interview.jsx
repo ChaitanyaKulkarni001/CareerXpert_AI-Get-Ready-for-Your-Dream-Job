@@ -263,8 +263,8 @@ const SpecificRoleInterview = () => {
         {/* Display Interview Question & Follow-up Section */}
         {question && (
           <div className="mt-6 p-4 border rounded-lg bg-white shadow-sm">
-            <h3 className="text-lg font-semibold text-gray-800">Generated Interview Question:</h3>
-            <p className="mt-2 text-gray-700">{question}</p>
+            {/* <h3 className="text-lg font-semibold text-gray-800">Generated Interview Question:</h3>
+            <p className="mt-2 text-gray-700">{question}</p> */}
 
             <div className="follow-up-interview-container max-w-3xl mx-auto mt-4 p-6 border rounded-lg shadow-lg bg-gray-50">
               <div

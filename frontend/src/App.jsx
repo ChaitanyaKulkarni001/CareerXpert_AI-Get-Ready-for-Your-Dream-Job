@@ -188,10 +188,10 @@ const resumeData = {
               <Route path="debate/start" element={<DebateConventos />}  />   
               <Route path="complain" element={<Report />}  />   
               <Route path="resume-builder" element={<ResumeBuilder />}  />   
-              <Route path="trial" element={<ResumeTemplate data={resumeData} />}  />   
+              {/* <Route path="trial" element={<ResumeTemplate data={resumeData} />}  />   
               <Route path="trial2" element={<ResumeTemplate2 data={resumeData} />}  />   
               <Route path="trial3" element={<ResumeTemplate3 data={resumeData} />}  />   
-              <Route path="trial4" element={<ResumeTemplate4 data={resumeData} />}  />   
+              <Route path="trial4" element={<ResumeTemplate4 data={resumeData} />}  />    */}
 
             </Route>
           </Route>

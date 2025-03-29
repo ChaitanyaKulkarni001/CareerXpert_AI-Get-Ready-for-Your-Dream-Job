@@ -1,6 +1,8 @@
 import React, { useState, useContext } from 'react';
 import api from '../../api';
 import { ThemeContext } from "../ThemeContext";
+import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip } from "recharts";
+import GitHubStyleCalendar from './GitHubStyleCalendar';
 
 const History = () => {
   const [data, setData] = useState([]);
@@ -8,7 +10,7 @@ const History = () => {
   const [error, setError] = useState('');
   const { theme } = useContext(ThemeContext);
 
-  // Record types to display in the table
+  // Record types to display in the table and bar chart
   const recordTypes = [
     "PRACTISE_INTERVIEW",
     "FOLLOWUP_INTERVIEW",
@@ -43,6 +45,12 @@ const History = () => {
       counts[record.type] = (counts[record.type] || 0) + 1;
     }
   });
+
+  // Prepare bar chart data from the counts
+  const barChartData = recordTypes.map((type) => ({
+    type,
+    count: counts[type]
+  }));
 
   // Conditional styling objects based on the theme
   const containerStyle = {
@@ -106,62 +114,45 @@ const History = () => {
     textAlign: 'justify',
   };
 
-  const buttonStyle = {
-    padding: '0.5rem 1rem',
-    backgroundColor: '#007aff',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    marginBottom: '1rem',
-  };
-
-  const keyStyle = {
-    fontWeight: 'bold',
-    color: '#007aff',
-  };
-
   return (
     <div style={containerStyle}>
       <h1 style={{ color: theme === "dim" ? '#000' : '#fff', marginBottom: '1rem' }}>
         My History
       </h1>
-     
       
-<div onClick={handleHistory}  class="relative inline-flex items-center justify-center gap-4 group">
-  <div
-    class="absolute inset-0 duration-1000 opacity-60 transitiona-all bg-gradient-to-r from-indigo-500 via-pink-500 to-yellow-400 rounded-xl blur-lg filter group-hover:opacity-100 group-hover:duration-200"
-  ></div>
-  <a
-    role="button"
-    class="group relative inline-flex items-center justify-center text-base rounded-xl bg-gray-900 px-8 py-3 font-semibold text-white transition-all duration-200 hover:bg-gray-800 hover:shadow-lg hover:-translate-y-0.5 hover:shadow-gray-600/30"
-    title="Watch my History"
-    href="#"
-    >  Review My Activity<svg
-      aria-hidden="true"
-      viewBox="0 0 10 10"
-      height="10"
-      width="10"
-      fill="none"
-      class="mt-0.5 ml-2 -mr-1 stroke-white stroke-2"
-    >
-      <path
-        d="M0 5h7"
-        class="transition opacity-0 group-hover:opacity-100"
-      ></path>
-      <path
-        d="M1 1l4 4-4 4"
-        class="transition group-hover:translate-x-[3px]"
-      ></path>
-    </svg>
-  </a>
-</div>
-
-
+      {/* Button to fetch history */}
+      <div 
+        onClick={handleHistory}  
+        className="relative inline-flex items-center justify-center gap-4 group" 
+        style={{ cursor: 'pointer', marginBottom: '1rem' }}
+      >
+        <div
+          className="absolute inset-0 duration-1000 opacity-60 transition-all bg-gradient-to-r from-indigo-500 via-pink-500 to-yellow-400 rounded-xl blur-lg filter group-hover:opacity-100 group-hover:duration-200"
+        ></div>
+        <a
+          role="button"
+          className="group relative inline-flex items-center justify-center text-base rounded-xl bg-gray-900 px-8 py-3 font-semibold text-white transition-all duration-200 hover:bg-gray-800 hover:shadow-lg hover:-translate-y-0.5 hover:shadow-gray-600/30"
+          title="Watch my History"
+          href="#"
+        >
+          Review My Activity
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 10 10"
+            height="10"
+            width="10"
+            fill="none"
+            className="mt-0.5 ml-2 -mr-1 stroke-white stroke-2"
+          >
+            <path d="M0 5h7" className="transition opacity-0 group-hover:opacity-100"></path>
+            <path d="M1 1l4 4-4 4" className="transition group-hover:translate-x-[3px]"></path>
+          </svg>
+        </a>
+      </div>
 
       {loading && <p>Loading...</p>}
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      
+
       {/* Table for record type counts */}
       {data && data.length > 0 && (
         <table className='mt-3' style={tableStyle}>
@@ -180,6 +171,51 @@ const History = () => {
             </tr>
           </tbody>
         </table>
+      )}
+
+
+<GitHubStyleCalendar
+  theme={theme}
+  style={{ transform: "scale(0.8)", transformOrigin: "center" }}
+/>
+
+
+
+      {/* Bar Graph Section */}
+      {data && data.length > 0 && (
+        <div style={{ marginTop: '2rem' }}>
+          <h2 style={{ marginBottom: '1rem', textAlign: 'center', color: theme === "dim" ? '#000' : '#fff' }}>
+            Record Type Counts
+          </h2>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart 
+              data={barChartData} 
+              margin={{ top: 20, right: 20, left: 20, bottom: 5 }}
+            >
+              <CartesianGrid 
+                strokeDasharray="3 3" 
+                stroke={theme === "dim" ? "#ccc" : "#444"} 
+              />
+              <XAxis 
+                dataKey="type" 
+                tick={{ fill: theme === "dim" ? "#000" : "#fff", fontSize: 12 }} 
+              />
+              <YAxis 
+                tick={{ fill: theme === "dim" ? "#000" : "#fff", fontSize: 12 }} 
+                domain={[0, 'dataMax']}
+                allowDecimals={false}
+              />
+              <RechartsTooltip 
+                contentStyle={{ 
+                  backgroundColor: theme === "dim" ? '#fff' : '#333', 
+                  border: 'none', 
+                  color: theme === "dim" ? '#000' : '#fff' 
+                }} 
+              />
+              <Bar dataKey="count" fill="#007aff" barSize={50} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
       )}
 
       {/* Detailed Records */}
@@ -210,8 +246,16 @@ const History = () => {
                 <strong>Metadata:</strong>
                 <div style={scrollBoxStyle}>
                   {Object.entries(record.metadata).map(([key, value], idx) => (
-                    <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.25rem 0', borderBottom: '1px solid #e0e0e0' }}>
-                      <span style={keyStyle}>{key}</span>
+                    <div 
+                      key={idx} 
+                      style={{ 
+                        display: 'flex', 
+                        justifyContent: 'space-between', 
+                        padding: '0.25rem 0', 
+                        borderBottom: '1px solid #e0e0e0' 
+                      }}
+                    >
+                      <span style={{ fontWeight: 'bold', color: '#007aff' }}>{key}</span>
                       <span>{value.toString()}</span>
                     </div>
                   ))}
