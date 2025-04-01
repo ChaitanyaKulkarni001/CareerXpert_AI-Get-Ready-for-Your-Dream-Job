@@ -552,7 +552,7 @@ class GroupDiscussionTopix(APIView):
             genai.configure(api_key="AIzaSyAnpEybMeLXj5UZ3KGAMiG-9d_cxpdhto8")
             model = genai.GenerativeModel("gemini-1.5-flash")
             # return Response({"text": text}, status=status.HTTP_200_OK)
-            analysis_prompt = f"Generate a Group Discussion Topic, for a group of 4 people, the topic should be relevant and should be able to discuss for 10 minutes, Give response only text of topic, no other text, ensure variety in each response. Just provide a single topic"
+            analysis_prompt = f"Generate a Group Discussion Topic, for a group of 4 people, the topic should be relevant and should be able to discuss for 10 minutes, Give response only text of topic, no other text, ensure variety in each response. topic should be realted to some natural subjects or general subjects Just provide a single topic"
             response = model.generate_content(analysis_prompt)
             content = response.text
             
