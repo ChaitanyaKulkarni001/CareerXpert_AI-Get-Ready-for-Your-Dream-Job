@@ -36,7 +36,7 @@ function ResumeChecker() {
     try {
       const res = await api.post("/api/extract-resume/", formData, {
         headers: { "Content-Type": "multipart/form-data" },
-      });
+      }); 
       setResponseData(res.data);
     } catch (error) {
       console.error("Error:", error);
